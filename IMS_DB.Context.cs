@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace imsapi
+namespace IMS.API
 {
     using System;
     using System.Data.Entity;
