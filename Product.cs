@@ -9,9 +9,7 @@
 
 namespace IMS.API
 {
-    using System;
-    using System.Collections.Generic;
-    
+
     public partial class Product
     {
         public int ProductID { get; set; }

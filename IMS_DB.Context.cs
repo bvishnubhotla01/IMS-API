@@ -9,10 +9,9 @@
 
 namespace IMS.API
 {
-    using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class IMSEntities : DbContext
     {
         public IMSEntities()
