@@ -4,21 +4,22 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
-using IMS.API;
 
-namespace imsapi.Controllers
+namespace IMS.API.Controllers
 {
     public class ProductsController : ApiController
     {
         private IMSEntities db = new IMSEntities();
 
         // GET: api/Products
+        [HttpGet]
         public IQueryable<Product> GetProducts()
         {
             return db.Products;
         }
 
         // GET: api/Products/5
+        [HttpGet]
         [ResponseType(typeof(Product))]
         public IHttpActionResult GetProduct(int id)
         {
@@ -32,6 +33,7 @@ namespace imsapi.Controllers
         }
 
         // PUT: api/Products/5
+        [HttpPut]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProduct(int id, Product product)
         {
@@ -67,6 +69,7 @@ namespace imsapi.Controllers
         }
 
         // POST: api/Products
+        [HttpPost]
         [ResponseType(typeof(Product))]
         public IHttpActionResult PostProduct(Product product)
         {
@@ -82,6 +85,7 @@ namespace imsapi.Controllers
         }
 
         // DELETE: api/Products/5
+        [HttpDelete]
         [ResponseType(typeof(Product))]
         public IHttpActionResult DeleteProduct(int id)
         {

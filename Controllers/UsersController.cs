@@ -6,19 +6,21 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using IMS.API;
 
-namespace imsapi.Controllers
+namespace IMS.API.Controllers
 {
     public class UsersController : ApiController
     {
         private IMSEntities db = new IMSEntities();
 
         // GET: api/Users
+        [HttpGet]
         public IQueryable<User> GetUsers()
         {
             return db.Users;
         }
 
         // GET: api/Users/5
+        [HttpGet]
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(string id)
         {
@@ -32,6 +34,7 @@ namespace imsapi.Controllers
         }
 
         // PUT: api/Users/5
+        [HttpPut]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutUser(string id, User user)
         {
@@ -67,6 +70,7 @@ namespace imsapi.Controllers
         }
 
         // POST: api/Users
+        [HttpPost]
         [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(User user)
         {
@@ -97,6 +101,7 @@ namespace imsapi.Controllers
         }
 
         // DELETE: api/Users/5
+        [HttpDelete]
         [ResponseType(typeof(User))]
         public IHttpActionResult DeleteUser(string id)
         {
