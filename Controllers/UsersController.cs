@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
-using IMS.API;
 
 namespace IMS.API.Controllers
 {
@@ -21,6 +20,7 @@ namespace IMS.API.Controllers
 
         // GET: api/Users/5
         [HttpGet]
+        [ActionName("get")]
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(string id)
         {

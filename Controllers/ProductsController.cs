@@ -1,7 +1,5 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -18,8 +16,9 @@ namespace IMS.API.Controllers
             return db.Products;
         }
 
-        // GET: api/Products/5
+        // GET: api/Products/get/5
         [HttpGet]
+        [ActionName("get")]
         [ResponseType(typeof(Product))]
         public IHttpActionResult GetProduct(int id)
         {
@@ -32,44 +31,27 @@ namespace IMS.API.Controllers
             return Ok(product);
         }
 
-        // PUT: api/Products/5
-        [HttpPut]
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutProduct(int id, Product product)
+        // PUT: api/Products/edit
+        [HttpPost]
+        [ActionName("edit")]
+        [ResponseType(typeof(bool))]
+        public IHttpActionResult UpdateProduct(Product product)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("false");
             }
 
-            if (id != product.ProductID)
-            {
-                return BadRequest();
-            }
+            db.Entry(product).State = EntityState.Modified;            
+            db.SaveChanges();            
+            
+            return Ok(true);
 
-            db.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Products
+        // POST: api/Products/create
         [HttpPost]
+        [ActionName("create")]
         [ResponseType(typeof(Product))]
         public IHttpActionResult PostProduct(Product product)
         {
@@ -84,23 +66,6 @@ namespace IMS.API.Controllers
             return CreatedAtRoute("DefaultApi", new { id = product.ProductID }, product);
         }
 
-        // DELETE: api/Products/5
-        [HttpDelete]
-        [ResponseType(typeof(Product))]
-        public IHttpActionResult DeleteProduct(int id)
-        {
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            db.Products.Remove(product);
-            db.SaveChanges();
-
-            return Ok(product);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -110,9 +75,34 @@ namespace IMS.API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ProductExists(int id)
+        // POST: api/Products/delete
+        [HttpPost]
+        [ActionName("delete")]
+        [ResponseType(typeof(bool))]
+        public IHttpActionResult DeleteProduct([FromBody]Product[] Products)
         {
-            return db.Products.Count(e => e.ProductID == id) > 0;
+            if (ModelState.IsValid)
+            {
+                foreach (Product product in Products)
+                {
+                    Product product1 = db.Products.FirstOrDefault(p => p.ProductID == product.ProductID);
+                    if (product1 == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        db.Products.Remove(product1);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+                
+            return Ok(true);
         }
     }
 }
